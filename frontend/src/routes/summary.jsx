@@ -1,5 +1,6 @@
 import axios from "axios";
 import { useState } from "react";
+import {Button} from "antd";
 
 const BACKEND_URL = "http://127.0.0.1:8000/create_note";
 
@@ -22,6 +23,7 @@ function Summary() {
     return (
         <div>
             <h1>Summary</h1>
+            <Button type="primary">Primary Button</Button>
 
             {summary}
 
