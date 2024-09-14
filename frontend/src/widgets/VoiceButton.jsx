@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
-import axios from "axios";
+import { MdMic, MdMicOff } from 'react-icons/md';
 
-export default function VoiceButton({setComments}) {
+export default function VoiceButton({setTranscript}) {
     window.SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
 
     const [isVoiceActive, setIsVoiceActive] = useState(false);
@@ -10,7 +10,7 @@ export default function VoiceButton({setComments}) {
 
     useEffect(() => {
         // Updates parent input field
-        setComments(transcribedText);
+        setTranscript(transcribedText);
     }, [transcribedText]);
     
     const activateVoice = (recognition) => {
@@ -68,30 +68,17 @@ export default function VoiceButton({setComments}) {
         }
     };
 
-    const micOn = (
-        <>
-            Speak normally, click on the microphone to end transcription
-            <h2>Mic On</h2>
-        </>
-    );
-
-    const micOff = (
-        <>
-            Review using your voice
-            <h2>Mic Off</h2>
-        </>
-    );
-
     return (
-        <div style={{display: "flex", flexDirection: "column", alignItems: "flex-start"}}>
-            <button onClick={handleClick}>{!isVoiceActive ?  micOff : micOn}</button>
-            {!isVoiceActive ?
-                ""
-                :
-                <p style={{marginBottom: "0.5rem", marginTop: "0.25rem", paddingLeft: "0.5rem", fontSize: "0.8rem", color: "gray"}}>
-                    * Don't worry if the transcription isn't perfect, we will summarize it for you when you finish.
+        <>
+            <div style={{visibility: isVoiceActive ? 'visible' : 'hidden'}}>
+                <h2>Recording in progress...</h2>
+                <p style={{marginBottom: "0.5rem", marginTop: "0.25rem", paddingLeft: "0.5rem", fontSize: "0.8rem"}}>
+                    Don't worry if the transcription isn't perfect, we will summarize it for you when you finish.
                 </p>
-            }
-        </div>
+                </div>
+            <div>
+                <button onClick={handleClick}>{!isVoiceActive ?  <MdMicOff/> : <MdMic/>}</button>
+            </div>
+        </>
     );
 }

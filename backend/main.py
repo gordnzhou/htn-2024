@@ -54,19 +54,25 @@ class Note(BaseModel):
     text: str
     date_posted: datetime
 
+class SummaryIn(BaseModel):
+    text: str
 
-@app.post("/create_note")
-async def create_note(note: NoteIn):
-
+@app.post("/summarize")
+async def summarize(note: NoteIn):
     note_prompt = str(CONTEXT + " " + note.text)
 
     response = cohere_client.generate(
         model="command",
         prompt=note_prompt,
-        max_tokens=100)
+        max_tokens=60
+    )
 
+    return { "summary" : response.generations[0].text }
+
+@app.post("/create_note")
+async def create_note(summary: SummaryIn):
     note = Note(
-        text=response.generations[0].text, 
+        text=summary.text, 
         date_posted=datetime.now()
     )
 
