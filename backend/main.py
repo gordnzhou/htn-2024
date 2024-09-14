@@ -68,13 +68,13 @@ async def summarize(note: NoteIn):
     response = cohere_client.generate(
         model="command",
         prompt=note_prompt,
-        max_tokens=500)
+        max_tokens=500
+    )
     
     return response.generations[0].text
 
 @app.post("/create_note")
 async def create_note(note: NoteIn):
-
     note = Note(
         text=note.text,
         date_posted=datetime.now()
