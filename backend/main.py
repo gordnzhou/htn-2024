@@ -53,7 +53,7 @@ async def summarize(note: NoteIn):
     response = cohere_client.generate(
         model="command",
         prompt=note_prompt,
-        max_tokens=1000)
+        max_tokens=500)
     
     return response.generations[0].text
 
