@@ -61,11 +61,12 @@ class SearchEngineService:
             f"Based on the following journal entries:\n\n"
             f"{retrieved_texts}\n\n"
             f"Answer the following question:\n{query}"
+            f"Make the answer concise but genuine and answer as if you are my friend. Don't add introductions or greetings."
         )
         response = self.cohere_client.generate(
             model='command-xlarge-nightly',
             prompt=prompt,
-            max_tokens=150,
+            max_tokens=1000,
             temperature=0.7
         )
         return response.generations[0].text.strip()

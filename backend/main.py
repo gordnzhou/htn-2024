@@ -36,7 +36,6 @@ async def root():
 
     return {"message": "Hello World"}
 
-
 class NoteIn(BaseModel):
     text: str
 
@@ -44,6 +43,8 @@ class Note(BaseModel):
     text: str
     date_posted: datetime
 
+class Query(BaseModel):
+    text: str
 
 @app.post("/create_note")
 async def create_note(note: NoteIn):
@@ -53,7 +54,7 @@ async def create_note(note: NoteIn):
     response = cohere_client.generate(
         model="command",
         prompt=note_prompt,
-        max_tokens=100)
+        max_tokens=1000)
 
     note = Note(
         text=response.generations[0].text, 
@@ -65,4 +66,13 @@ async def create_note(note: NoteIn):
     db_note = await notes_collection.find_one({"_id": new_note.inserted_id})
     db_note['date_posted'] = db_note['date_posted'].strftime("%Y-%m-%d %H:%M:%S")
 
+    # Add note to search engine db
+    journal_entry = "Date posted: " + db_note['date_posted'] + "Content: " + note.text
+    search_engine_service.insert_entry(journal_entry)
+
     return str(db_note)
+
+@app.post("/query_journal")
+async def query(query: Query):
+    response = search_engine_service.rag_search(query.text)
+    return response
