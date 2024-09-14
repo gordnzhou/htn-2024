@@ -1,13 +1,19 @@
 import '../App.css';
+import MemoryNote from '../widgets/MemoryNote';
 
-function Root() {
+function Root({ notes }) {
 
   return (
     <>
-      <h1>Vite + React</h1>
-      <div className="card">
-        Hello
-      </div>
+        <div className="card">
+            <h2>Record a memory</h2>
+        </div>
+        <div>
+            <h2>Recent Memories</h2>
+            {notes.slice(0, 3).map((note, index) => (
+                <MemoryNote key={index} note={note}/>
+            ))}
+        </div>
     </>
   )
 }

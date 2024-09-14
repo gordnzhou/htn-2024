@@ -1,4 +1,4 @@
-import VoiceButton from '../components/VoiceButton'
+import VoiceButton from '../widgets/VoiceButton'
 import { useState } from 'react'
 
 function Recorder() {
