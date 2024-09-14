@@ -1,9 +1,19 @@
+import { useNavigate } from 'react-router-dom';
 import VoiceButton from '../widgets/VoiceButton'
 import { useState, useEffect, useRef } from 'react'
 
-function Recorder() {
-    const [transcript, setTranscript] = useState("");
+function Recorder({transcript, setTranscript}) {
+    const [done, setDone] = useState(false);
+    const navigateTo = useNavigate();
+
     const endOfContentRef = useRef(null);
+
+    useEffect(() => {
+        if (done) {
+            // Navigates to summary page with finished transcript state
+            navigateTo('/summary')
+        }
+    }, [done]);
 
     const scrollToBottom = () => {
         console.log("scroll");
@@ -30,7 +40,7 @@ function Recorder() {
                 {transcript}
                 <div ref={endOfContentRef} />
             </div>
-            <VoiceButton setTranscript={setTranscript}/>
+            <VoiceButton setTranscript={setTranscript} setDone={setDone}/>
         </>
     )
 }

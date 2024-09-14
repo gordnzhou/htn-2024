@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { MdMic, MdMicOff } from 'react-icons/md';
 
-export default function VoiceButton({setTranscript}) {
+export default function VoiceButton({setTranscript, setDone}) {
     window.SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
 
     const [isVoiceActive, setIsVoiceActive] = useState(false);
@@ -62,6 +62,7 @@ export default function VoiceButton({setTranscript}) {
         } else {
             recognition.stop();
             setIsVoiceActive(false);
+            setDone(true);
             if (transcribedText.length > 0) {
                 setTranscribedText(transcribedText)
             }
