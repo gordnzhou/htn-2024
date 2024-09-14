@@ -75,5 +75,5 @@ def rag_search(query):
     response = generate_response(query, retrieved_texts)
     return response
 
-response = rag_search("What did I do at Hack the North?")
+response = rag_search("Would you say I have a healthy mindset and lifestyle?")
 print(response)
