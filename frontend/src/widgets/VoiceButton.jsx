@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { MdMic, MdMicOff } from 'react-icons/md';
+import { IoMdRadioButtonOn } from "react-icons/io";
 
 export default function VoiceButton({setTranscript, setDone}) {
     window.SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
@@ -74,11 +74,13 @@ export default function VoiceButton({setTranscript, setDone}) {
             <div style={{visibility: isVoiceActive ? 'visible' : 'hidden'}}>
                 <h2>Recording in progress...</h2>
                 <p style={{marginBottom: "0.5rem", marginTop: "0.25rem", paddingLeft: "0.5rem", fontSize: "0.8rem"}}>
-                    Don't worry if the transcription isn't perfect, we will summarize it for you when you finish.
+                    Don't worry if the transcription isn't perfect, we'll summarize it for you when you finish.
                 </p>
                 </div>
             <div>
-                <button onClick={handleClick}>{!isVoiceActive ?  <MdMicOff/> : <MdMic/>}</button>
+                <button onClick={handleClick} style={{background: 'none', border: 'none', outline: 'none'}}>
+                    <IoMdRadioButtonOn style={{color: isVoiceActive ? "red" : "black", fontSize: '5em' }}/>
+                </button>
             </div>
         </>
     );
