@@ -61,7 +61,7 @@ class SearchEngineService:
             f"Based on the following journal entries:\n\n"
             f"{retrieved_texts}\n\n"
             f"Answer the following question:\n{query}"
-            f"Make the answer concise but genuine and answer as if you are my friend. Don't add introductions or greetings."
+            f"Make the answer concise but make it feel genuine, very natural, and human-like."
         )
         response = self.cohere_client.generate(
             model='command-xlarge-nightly',

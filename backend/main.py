@@ -25,10 +25,10 @@ notes_collection = db.get_collection("notes")
 cohere_client = cohere.Client(os.environ["COHERE_API_KEY"])
 
 # TODO: AI's summary is too long, improve prompt
-CONTEXT = ("This is a transcription of me talking about my day in a stream of consciousness style."
-        "I want you to write the transcribed text into a coherent and concise paragraph while retaining my voice and "
-        "tone so it still sounds like I wrote it. Only return the summarized text "
-        "and nothing else.")
+CONTEXT = ("This is a transcription of my speech in a stream of consciousness style. "
+        "I want you to write the transcribed text into a casual but coherent piece of paragraph form writing while "
+        "retaining my voice and tone so it still sounds like I wrote it. "
+        "Only return the summarized text and nothing else. Don't prefix the response with anything.")
 
 @app.get("/")
 async def root():
@@ -46,18 +46,22 @@ class Note(BaseModel):
 class Query(BaseModel):
     text: str
 
-@app.post("/create_note")
-async def create_note(note: NoteIn):
-
+@app.post("/summarize")
+async def summarize(note: NoteIn):
     note_prompt = str(CONTEXT + " " + note.text)
 
     response = cohere_client.generate(
         model="command",
         prompt=note_prompt,
         max_tokens=1000)
+    
+    return response.generations[0].text
+
+@app.post("/create_note")
+async def create_note(note: NoteIn):
 
     note = Note(
-        text=response.generations[0].text, 
+        text=note.text,
         date_posted=datetime.now()
     )
 
