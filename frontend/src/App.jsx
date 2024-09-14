@@ -25,19 +25,19 @@ function App() {
             date: "09.13.24",
             description: "sfkjsdklfsdf",
         },
-    ])
+    ]);
+
+    const [transcript, setTranscript] = useState("");
 
   return (
-        <>
-            <Router>
-                <Navbar />
-                <Routes>
-                    <Route path="/" element={<Root notes={notes}/>} />
-                    <Route path="record" element={<Recorder/>} />
-                    <Route path="summary" element={<Summary/>} />
-                </Routes>
-            </Router>
-        </>
+        <Router>
+            <Navbar />
+            <Routes>
+                <Route path="/" element={<Root notes={notes}/>} />
+                <Route path="record" element={<Recorder transcript={transcript} setTranscript={setTranscript}/>} />
+                <Route path="summary" element={<Summary transcript={transcript}/>} />
+            </Routes>
+        </Router>
     )
 }
 
