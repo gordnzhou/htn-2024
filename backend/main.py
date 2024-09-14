@@ -6,10 +6,15 @@ from datetime import datetime
 from pymongo import MongoClient
 import motor.motor_asyncio
 from dotenv import load_dotenv
+import sys
+
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+from search.search import SearchEngineService
 
 import cohere
 
 app = FastAPI()
+search_engine_service = SearchEngineService()
 
 load_dotenv()
 
@@ -57,7 +62,7 @@ async def create_note(note: NoteIn):
 
     new_note = await notes_collection.insert_one(note.dict())
 
-    db_note = await notes_collection.find_one({"_id": new_note.inserted_id}) 
+    db_note = await notes_collection.find_one({"_id": new_note.inserted_id})
     db_note['date_posted'] = db_note['date_posted'].strftime("%Y-%m-%d %H:%M:%S")
 
     return str(db_note)
